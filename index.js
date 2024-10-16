@@ -12,6 +12,9 @@ const articulosRouter = require('./routers/articulos.router');
 app.use('/articulos', articulosRouter);
 // Siempre que me refiera a articulos le coloco el prefijo
 
+const marcasRouter = require('./routers/marcas.router');
+app.use('/marcas', marcasRouter);
+// Siempre que me refiera a marcas le coloco el prefijo
 
 app.get("/", (req, res) => {
     res.send("Hola Articulos");
