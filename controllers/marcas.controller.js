@@ -3,6 +3,7 @@
 // Campos de la tabla marcas
 // id_marca
 // nombre
+// fk_pais
 
 
 const db = require("../db/db");
@@ -27,10 +28,10 @@ const showBrand = (req, res) => {
     db.query(sql,[id_marca], (error, rows) => {
         console.log(rows);
         if(error){
-            return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
+            return res.status(500).json({error : "ERROR: Intente mas tarde, por favor."});
         }
         if(rows.length == 0){
-            return res.status(404).send({error : "ERROR: No existe la marca buscadA"});
+            return res.status(404).send({error : "ERROR: La marca buscada no existe."});
         };
         res.json(rows[0]); 
         // me muestra el elemento en la posicion cero si existe.
@@ -39,12 +40,12 @@ const showBrand = (req, res) => {
 
 //// METODO POST  ////
 const storeBrand = (req, res) => {
-    const {nombre} = req.body;
-    const sql = "INSERT INTO marcas (nombre) VALUES (?)";
-    db.query(sql,[nombre], (error, result) => {
+    const {nombre, fk_pais} = req.body;
+    const sql = "INSERT INTO marcas (nombre, fk_pais) VALUES (?,?)";
+    db.query(sql,[nombre, fk_pais], (error, result) => {
         console.log(result);
         if(error){
-            return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
+            return res.status(500).json({error : "ERROR: Intente mas tarde, por favor"});
         }
         const marca = {...req.body, id: result.insertId}; // ... reconstruir el objeto del body
         res.status(201).json(marca); // muestra creado con exito el elemento
@@ -55,15 +56,15 @@ const storeBrand = (req, res) => {
 //// METODO PUT  ////
 const updateBrand = (req, res) => {
     const {id_marca} = req.params;
-    const {nombre} = req.body;
-    const sql ="UPDATE marcas SET nombre = ? WHERE id_marca = ?";
-    db.query(sql,[nombre, id_marca], (error, result) => {
+    const {nombre, fk_pais} = req.body;
+    const sql ="UPDATE marcas SET nombre = ?, fk_pais =? WHERE id_marca = ?";
+    db.query(sql,[nombre, fk_pais, id_marca], (error, result) => {
         console.log(result);
         if(error){
-            return res.status(500).json({error : "ERROR: Intente mas tarde por favor"});
+            return res.status(500).json({error : "ERROR: Intente mas tarde, por favor."});
         }
         if(result.affectedRows == 0){
-            return res.status(404).send({error : "ERROR: La marca a modificar no existe"});
+            return res.status(404).send({error : "ERROR: La marca a modificar no existe."});
         };
         
         const marca = {...req.body, ...req.params}; // ... reconstruir el objeto del body
@@ -85,7 +86,7 @@ const destroyBrand = (req, res) => {
         if(result.affectedRows == 0){
             return res.status(404).send({error : "ERROR: La marca a borrar no existe"});
         };
-        res.json({mesaje : "Marca eliminada"});
+        res.json({mesaje : "Marca eliminada con exito."});
     }); 
 };
 

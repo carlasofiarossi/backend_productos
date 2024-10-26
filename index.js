@@ -19,6 +19,17 @@ app.use('/articulos', articulosRouter);
 const marcasRouter = require('./routers/marcas.router');
 app.use('/marcas', marcasRouter);
 
+const categoriasRouter = require('./routers/categorias.router');
+app.use('/categorias', categoriasRouter);
+
+const paisesRouter = require('./routers/paises.router');
+app.use('/paises', paisesRouter);
+
+const subcategoriasRouter = require('./routers/subcategorias.router');
+app.use('/subcategorias', subcategoriasRouter);
+
+const tiposRouter = require('./routers/tipos.router');
+app.use('/tipos', tiposRouter);
 
 const userRouter = require('./routers/user.router');
 app.use('/login', userRouter);
