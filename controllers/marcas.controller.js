@@ -86,7 +86,7 @@ const destroyBrand = (req, res) => {
         if(result.affectedRows == 0){
             return res.status(404).send({error : "ERROR: La marca a borrar no existe"});
         };
-        res.json({mesaje : "Marca eliminada con exito."});
+        res.json({mensaje : "Marca eliminada con exito."});
     }); 
 };
 

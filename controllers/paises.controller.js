@@ -85,7 +85,7 @@ const destroyCountry = (req, res) => {
         if(result.affectedRows == 0){
             return res.status(404).send({error : "ERROR: El país borrar no existe"});
         };
-        res.json({mesaje : "País eliminado con exito."});
+        res.json({mensaje : "País eliminado con exito."});
     }); 
 };
 

@@ -85,7 +85,7 @@ const destroyCategory = (req, res) => {
         if(result.affectedRows == 0){
             return res.status(404).send({error : "ERROR: La categoria a borrar no existe"});
         };
-        res.json({mesaje : "Categoria eliminada con exito."});
+        res.json({mensaje : "Categoria eliminada con exito."});
     }); 
 };
 

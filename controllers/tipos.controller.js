@@ -86,7 +86,7 @@ const destroyType = (req, res) => {
         if(result.affectedRows == 0){
             return res.status(404).send({error : "ERROR: El tipo a borrar no existe"});
         };
-        res.json({mesaje : "Tipo eliminado con exito."});
+        res.json({mensaje : "Tipo eliminado con exito."});
     }); 
 };
 

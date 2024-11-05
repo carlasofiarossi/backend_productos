@@ -1,10 +1,38 @@
+/// CONTROLADORES DEL MODULO ///
+
+// Campos de la tabla login
+// id_login(int(11))
+// nombre(varchar(20))
+// apellido(varchar(20))
+// fk_provincia(int(10))
+// fk_pronombre(int(10))
+// celular(int(20))
+// mail(varchar(30))
+//password(varchar(20))
+//imagen(varchar(255):null)
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const db = require("../db/db"); // Importar la conexión a la base de datos
 
 // Función para registrar usuario
 const register = (req, res) => {
-    const { nombre, mail, password } = req.body;
+    console.log(req.file);
+    let imageName = "";
+
+    if(req.file){
+        imageName = req.file.filename;
+    };
+
+    const {
+        nombre,
+        apellido,
+        fk_provincia,
+        fk_pronombre,
+        celular,
+        mail,
+        password
+    } = req.body;
 
     // Verificar si el usuario ya existe
     db.query('SELECT * FROM login WHERE Mail = ?', [mail], (error, results) => {
@@ -25,23 +53,27 @@ const register = (req, res) => {
             }
 
             // Insertar nuevo usuario en la base de datos
-            db.query('INSERT INTO login (Nombre, Mail, Password) VALUES (?, ?, ?)', [nombre, mail, hash], (insertError, insertResults) => {
-                if (insertError) {
-                    console.error("Error inserting user:", insertError);
-                    return res.status(500).send("Error registering user");
+            db.query(
+                'INSERT INTO login (nombre, apellido, fk_provincia, fk_pronombre, celular, mail, password, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                [nombre, apellido, fk_provincia, fk_pronombre, celular, mail, hash, imageName],
+                (insertError, insertResults) => {
+                    if (insertError) {
+                        console.error("Error inserting user:", insertError);
+                        return res.status(500).send("Error registering user");
+                    }
+
+                    // Obtener el ID del usuario recién creado
+                    const userId = insertResults.insertId;
+
+                    // Generar un token JWT con el ID del usuario
+                    const token = jwt.sign({ id: userId }, process.env.SECRET_KEY, {
+                        expiresIn: "1h",
+                    });
+
+                    // Enviar la respuesta con el token
+                    res.status(201).send({ auth: true, token });
                 }
-
-                // Obtener el ID del usuario recién creado
-                const userId = insertResults.insertId;
-
-                // Generar un token JWT con el ID del usuario
-                const token = jwt.sign({ id: userId }, process.env.SECRET_KEY, {
-                    expiresIn: "1h",
-                });
-
-                // Enviar la respuesta con el token
-                res.status(201).send({ auth: true, token });
-            });
+            );
         });
     });
 };
