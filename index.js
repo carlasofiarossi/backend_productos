@@ -25,6 +25,12 @@ app.use('/categorias', categoriasRouter);
 const paisesRouter = require('./routers/paises.router');
 app.use('/paises', paisesRouter);
 
+const pronombresRouter = require('./routers/pronombres.router');
+app.use('/pronombres', pronombresRouter);
+
+const provinciasRouter = require('./routers/provincias.router');
+app.use('/provincias', provinciasRouter);
+
 const subcategoriasRouter = require('./routers/subcategorias.router');
 app.use('/subcategorias', subcategoriasRouter);
 
@@ -36,6 +42,8 @@ app.use('/login', userRouter);
 
 
 app.use("/auth", require("./routers/auth.router"));
+
+
 
 app.get("/", (req, res) => {
     res.send("Hola Articulos");

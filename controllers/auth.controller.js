@@ -8,7 +8,7 @@
 // fk_pronombre(int(10))
 // celular(int(20))
 // mail(varchar(30))
-//password(varchar(20))
+//password(varchar(60))
 //imagen(varchar(255):null)
 
 const jwt = require("jsonwebtoken");
@@ -18,11 +18,7 @@ const db = require("../db/db"); // Importar la conexión a la base de datos
 // Función para registrar usuario
 const register = (req, res) => {
     console.log(req.file);
-    let imageName = "";
-
-    if(req.file){
-        imageName = req.file.filename;
-    };
+    let imageName = req.file ? req.file.filename : null; // Manejo de la imagen
 
     const {
         nombre,
@@ -78,12 +74,13 @@ const register = (req, res) => {
     });
 };
 
+
 // Función para hacer login
-const login = (req, res) => {
+const login = (req, res) => { 
     const { mail, password } = req.body;
 
     // Buscar al usuario por correo electrónico
-    db.query('SELECT * FROM login WHERE Mail = ?', [mail], (error, results) => {
+    db.query('SELECT ID_Login, Mail, Password FROM login WHERE Mail = ?', [mail], (error, results) => {
         if (error) {
             console.error("Login error:", error);
             return res.status(500).send("Error during login");
@@ -95,8 +92,15 @@ const login = (req, res) => {
         }
 
         const user = results[0];
+        console.log("Retrieved user:", user);
 
-        // Comparar la contraseña
+        // Verificar que la contraseña no esté vacía o indefinida
+        if (!user.Password) {
+            console.error("Password not set for this user.");
+            return res.status(500).send("Password not set for this user.");
+        }
+
+        // Comparar la contraseña proporcionada con la almacenada en la base de datos
         bcrypt.compare(password, user.Password, (err, passwordIsValid) => {
             if (err) {
                 console.error("Error comparing passwords:", err);
@@ -108,7 +112,7 @@ const login = (req, res) => {
             }
 
             // Generar un token JWT con el ID del usuario
-            const token = jwt.sign({ id: user.ID_Login }, process.env.SECRET_KEY, {
+            const token = jwt.sign({ id: user.id_login }, process.env.SECRET_KEY, {
                 expiresIn: "1h",
             });
 

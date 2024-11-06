@@ -1,6 +1,8 @@
 /// RUTAS DEL MODULO ///
 const express = require("express");
 const router = express.Router();
+const db = require("../db/db");
+
 
 //// MULTER ///
 const multer = require("multer");
@@ -16,7 +18,22 @@ const storage = multer.diskStorage({
     },
 });
 
-const upload = multer({storage});
+const upload = multer({
+    storage,
+    fileFilter: (req, file, cb) => {
+        console.log(file);
+        const fileTypes = /jpg|jpeg|png/;
+        const mimetype = fileTypes.test(file.mimetype);
+        const extname = fileTypes.test(
+            path.extname(file.originalname).toLowerCase()
+        );
+        if(mimetype && path.extname) {
+            return cb(null, true);
+        };
+        cb("Tipo de archivo no soportado");
+    },
+    limits: {fileSize: 1024 * 1024 * 1}, // aprox 1Mb
+});
 
 
 //// AUTH ////
@@ -28,7 +45,23 @@ router.post('/register', upload.single('imagen'), controller.register);
 router.post('/login', controller.login);
 
 router.get("/protected", authMiddleware, (req, res) => {
-    res.status(200).send(`Hola Usuario ${req.userId}`);
+    const userId = req.userId;
+
+    // Consultar la base de datos para obtener el nombre del usuario
+    const sql = "SELECT nombre FROM login WHERE id_login = ?";
+    db.query(sql, [userId], (error, results) => {
+        if (error) {
+            console.error("Error al obtener el nombre del usuario:", error);
+            return res.status(500).send("Error al obtener la información del usuario.");
+        }
+
+        if (results.length == 0) {
+            return res.status(404).send("Usuario no encontrado.");
+        }
+
+        const nombre = results[0].nombre;
+        res.status(200).send(`¡Hola, ${nombre}!`);
+    });
 });
 
 
