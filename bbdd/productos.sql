@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-10-2024 a las 06:32:34
+-- Tiempo de generación: 06-11-2024 a las 03:59:03
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -81,22 +81,33 @@ INSERT INTO `categorias` (`Id_Categoria`, `Nombre`) VALUES
 CREATE TABLE `login` (
   `ID_Login` int(11) NOT NULL,
   `Nombre` varchar(20) NOT NULL,
+  `Apellido` varchar(20) NOT NULL,
+  `FK_Provincia` int(10) NOT NULL,
+  `FK_Pronombre` int(10) NOT NULL,
+  `Celular` int(20) NOT NULL,
   `Mail` varchar(30) NOT NULL,
-  `Password` varchar(20) NOT NULL
+  `Password` varchar(60) NOT NULL,
+  `Imagen` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `login`
 --
 
-INSERT INTO `login` (`ID_Login`, `Nombre`, `Mail`, `Password`) VALUES
-(1, 'Carla', 'carla@mail.com', '123456'),
-(2, 'Carlitos', 'carlitos@mail.com', '654321'),
-(3, 'Pepito', 'pepito@mail.com', '$2a$08$ixOHS4eiYqqTf'),
-(5, 'Laura', 'laura@mail.com', '$2a$08$f0B.lyQOvBCyP'),
-(6, 'Juan', 'juan@mail.com', '$2a$08$X/F.Sicw.pB8V'),
-(7, 'Martita', 'martita@mail.com', '$2a$08$EAHhP5ciub6mA'),
-(8, 'Lucianita', 'lucianita@mail.com', '1233466');
+INSERT INTO `login` (`ID_Login`, `Nombre`, `Apellido`, `FK_Provincia`, `FK_Pronombre`, `Celular`, `Mail`, `Password`, `Imagen`) VALUES
+(1, 'Carla', '', 1, 3, 0, 'carla@mail.com', '123456', NULL),
+(2, 'Carlitos', '', 1, 1, 0, 'carlitos@mail.com', '654321', NULL),
+(3, 'Pepito', '', 1, 3, 0, 'pepito@mail.com', '$2a$08$ixOHS4eiYqqTf', NULL),
+(5, 'Laura', '', 1, 2, 0, 'laura@mail.com', '$2a$08$f0B.lyQOvBCyP', NULL),
+(6, 'Juan', '', 1, 1, 0, 'juan@mail.com', '$2a$08$X/F.Sicw.pB8V', NULL),
+(7, 'Martita', '', 1, 2, 0, 'martita@mail.com', '$2a$08$EAHhP5ciub6mA', NULL),
+(9, 'Armando', 'Cruz', 1, 1, 1122334455, 'armando@mail.com', '$2a$08$xTyzN69IVY5tV', ''),
+(11, 'Patricio', 'Rey', 1, 1, 11111111, '1@mail.com', '$2a$08$5jLRaVHciL1tH', '1730776662303.jpg'),
+(12, 'Luciana', 'Campos', 1, 3, 1544779452, 'luciana2@mail.com', '$2a$08$xvEqKHfN7a31G', '1730842947875.jpg'),
+(13, 'Mia', 'Wallace', 1, 2, 1544779966, 'miaw@mail.com', '$2a$08$27PhHUdUDBMpRnLQuLo0b.mpNgUsS2/4FUxd130Xdj.5BYwnQMcvC', '1730857405444.jpg'),
+(14, 'Marco', 'Polo', 1, 1, 1144337766, 'marco@mail.com', '$2a$08$z3zUPDx7ODD0fDM/BHjJ8..jl9n/GKVQJBy16QKwm6R5nVWqRVrTy', '1730857611114.jpg'),
+(15, 'Maria', 'Lopez', 1, 3, 1144663344, 'maria@mail.com', '$2a$08$vA/1ERNtOYuZxQ7bVmYDQuMyYzSVX7Aci2bxgwxNavp3ok1M1XwM.', '1730857776890.jpg'),
+(17, 'Marta', 'Lopez', 1, 2, 1166443377, 'marta@mail.com', '$2a$08$zXLatikb00aBxMDmh/rE8e1D57qLZuVKt0ztNXhXAit9OU7YRM3nK', '1730858157080.jpg');
 
 -- --------------------------------------------------------
 
@@ -151,6 +162,44 @@ INSERT INTO `paises` (`ID_Pais`, `Nombre`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `pronombres`
+--
+
+CREATE TABLE `pronombres` (
+  `ID_Pronombre` int(10) NOT NULL,
+  `Nombre` varchar(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `pronombres`
+--
+
+INSERT INTO `pronombres` (`ID_Pronombre`, `Nombre`) VALUES
+(1, 'El'),
+(2, 'Ella'),
+(3, 'Elle');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `provincias`
+--
+
+CREATE TABLE `provincias` (
+  `ID_Provincia` int(10) NOT NULL,
+  `Nombre` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `provincias`
+--
+
+INSERT INTO `provincias` (`ID_Provincia`, `Nombre`) VALUES
+(1, 'Buenos Aires');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `subcategorias`
 --
 
@@ -177,7 +226,7 @@ INSERT INTO `subcategorias` (`ID_Sub`, `Nombre`, `FK_Categoria`) VALUES
 --
 
 CREATE TABLE `tipos` (
-  `ID_Tipos` int(10) NOT NULL,
+  `ID_Tipo` int(10) NOT NULL,
   `Nombre` varchar(20) NOT NULL,
   `FK_Subcategoria` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -186,7 +235,7 @@ CREATE TABLE `tipos` (
 -- Volcado de datos para la tabla `tipos`
 --
 
-INSERT INTO `tipos` (`ID_Tipos`, `Nombre`, `FK_Subcategoria`) VALUES
+INSERT INTO `tipos` (`ID_Tipo`, `Nombre`, `FK_Subcategoria`) VALUES
 (1, 'Gloss', 1),
 (2, 'Base', 2),
 (3, 'Bronzer', 2),
@@ -220,7 +269,11 @@ ALTER TABLE `categorias`
 -- Indices de la tabla `login`
 --
 ALTER TABLE `login`
-  ADD PRIMARY KEY (`ID_Login`);
+  ADD PRIMARY KEY (`ID_Login`),
+  ADD KEY `FK_Genero` (`FK_Pronombre`),
+  ADD KEY `FK_Provincia` (`FK_Provincia`),
+  ADD KEY `FK_Provincia_2` (`FK_Provincia`),
+  ADD KEY `FK_Pronombre` (`FK_Pronombre`);
 
 --
 -- Indices de la tabla `marcas`
@@ -236,6 +289,18 @@ ALTER TABLE `paises`
   ADD PRIMARY KEY (`ID_Pais`);
 
 --
+-- Indices de la tabla `pronombres`
+--
+ALTER TABLE `pronombres`
+  ADD PRIMARY KEY (`ID_Pronombre`);
+
+--
+-- Indices de la tabla `provincias`
+--
+ALTER TABLE `provincias`
+  ADD PRIMARY KEY (`ID_Provincia`);
+
+--
 -- Indices de la tabla `subcategorias`
 --
 ALTER TABLE `subcategorias`
@@ -246,7 +311,7 @@ ALTER TABLE `subcategorias`
 -- Indices de la tabla `tipos`
 --
 ALTER TABLE `tipos`
-  ADD PRIMARY KEY (`ID_Tipos`),
+  ADD PRIMARY KEY (`ID_Tipo`),
   ADD KEY `FK_Subcategoria` (`FK_Subcategoria`);
 
 --
@@ -257,43 +322,55 @@ ALTER TABLE `tipos`
 -- AUTO_INCREMENT de la tabla `articulos`
 --
 ALTER TABLE `articulos`
-  MODIFY `ID_Articulo` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `ID_Articulo` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `Id_Categoria` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `Id_Categoria` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `login`
 --
 ALTER TABLE `login`
-  MODIFY `ID_Login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `ID_Login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `marcas`
 --
 ALTER TABLE `marcas`
-  MODIFY `ID_Marca` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `ID_Marca` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `paises`
 --
 ALTER TABLE `paises`
-  MODIFY `ID_Pais` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID_Pais` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `pronombres`
+--
+ALTER TABLE `pronombres`
+  MODIFY `ID_Pronombre` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `provincias`
+--
+ALTER TABLE `provincias`
+  MODIFY `ID_Provincia` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `subcategorias`
 --
 ALTER TABLE `subcategorias`
-  MODIFY `ID_Sub` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `ID_Sub` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `tipos`
 --
 ALTER TABLE `tipos`
-  MODIFY `ID_Tipos` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID_Tipo` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Restricciones para tablas volcadas
@@ -303,28 +380,35 @@ ALTER TABLE `tipos`
 -- Filtros para la tabla `articulos`
 --
 ALTER TABLE `articulos`
-  ADD CONSTRAINT `articulos_ibfk_1` FOREIGN KEY (`FK_Marca`) REFERENCES `marcas` (`ID_Marca`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `articulos_ibfk_2` FOREIGN KEY (`FK_Tipo`) REFERENCES `tipos` (`ID_Tipos`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `articulos_ibfk_3` FOREIGN KEY (`FK_Subcategoria`) REFERENCES `subcategorias` (`ID_Sub`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `articulos_ibfk_4` FOREIGN KEY (`FK_Categoria`) REFERENCES `categorias` (`Id_Categoria`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `articulos_ibfk_1` FOREIGN KEY (`FK_Marca`) REFERENCES `marcas` (`ID_Marca`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `articulos_ibfk_2` FOREIGN KEY (`FK_Tipo`) REFERENCES `tipos` (`ID_Tipo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `articulos_ibfk_3` FOREIGN KEY (`FK_Subcategoria`) REFERENCES `subcategorias` (`ID_Sub`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `articulos_ibfk_4` FOREIGN KEY (`FK_Categoria`) REFERENCES `categorias` (`Id_Categoria`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `login`
+--
+ALTER TABLE `login`
+  ADD CONSTRAINT `login_ibfk_1` FOREIGN KEY (`FK_Provincia`) REFERENCES `provincias` (`ID_Provincia`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `login_ibfk_2` FOREIGN KEY (`FK_Pronombre`) REFERENCES `pronombres` (`ID_Pronombre`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `marcas`
 --
 ALTER TABLE `marcas`
-  ADD CONSTRAINT `marcas_ibfk_1` FOREIGN KEY (`FK_Pais`) REFERENCES `paises` (`ID_Pais`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `marcas_ibfk_1` FOREIGN KEY (`FK_Pais`) REFERENCES `paises` (`ID_Pais`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `subcategorias`
 --
 ALTER TABLE `subcategorias`
-  ADD CONSTRAINT `subcategorias_ibfk_1` FOREIGN KEY (`FK_Categoria`) REFERENCES `categorias` (`Id_Categoria`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `subcategorias_ibfk_1` FOREIGN KEY (`FK_Categoria`) REFERENCES `categorias` (`Id_Categoria`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tipos`
 --
 ALTER TABLE `tipos`
-  ADD CONSTRAINT `tipos_ibfk_1` FOREIGN KEY (`FK_Subcategoria`) REFERENCES `subcategorias` (`ID_Sub`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `tipos_ibfk_1` FOREIGN KEY (`FK_Subcategoria`) REFERENCES `subcategorias` (`ID_Sub`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
